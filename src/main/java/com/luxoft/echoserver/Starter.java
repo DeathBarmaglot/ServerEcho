@@ -1,13 +1,11 @@
-//package com.luxoft.echoserver;
+package com.luxoft.echoserver;
+
+public class Starter {
+    public static void main(String[] args) throws Exception {
+        WebServer server = new WebServer();
+        server.setPort(50000);
+        server.setWebAppPath("src/main/resources/webapp/");
+        server.start();
+    }
+}
 //
-//import java.io.IOException;
-//
-//public class Starter {
-//    public static void main(String[] args) throws IOException {
-//        NewServer server = new NewServer();
-//     server.setPort(50000);
-//     server.setWebAppPath("scr/main/resources/webapp");
-//     server.start();
-//    }
-//}
-////
