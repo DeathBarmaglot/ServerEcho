@@ -1,51 +1,25 @@
 package com.luxoft.echoserver;
 
-import java.io.BufferedReader;
+import com.sun.net.httpserver.HttpServer;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.InetSocketAddress;
 
-public class Server implements AutoCloseable {
-    public static final int length = 50;
+public class Server {
     public static final int PORT = 50000;
-    public static final String HOST = "localhost";
-    private final ServerSocket server;
-    private static BufferedReader input;
-    private static PrintStream outputStream;
 
-    public static void main(String[] args) {
-        try (Server server = new Server()) {
-            server.start();
-        } catch (IOException e) {}
+    public static void main(String[] args) throws IOException {
+
+        HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
+        System.out.println("server started at " + PORT);
+        server.createContext("/", new RequestHandler());
+        server.createContext("/css", new RequestHandler());
+        server.createContext("/get", new ResourceReader());
+        server.createContext("/post", new ResponseWriter());
+        server.setExecutor(null);
+        server.start();
+
     }
 
-    public Server() throws IOException {
-        server = new ServerSocket(PORT, length, InetAddress.getByName(HOST));
-        System.out.println("Created Server");
-    }
-
-    public void start() throws IOException {
-        String line;
-        System.out.println("Server Ready: " + server);
-        Socket clientSocket = server.accept();
-        System.out.println("Received Connection from " + clientSocket);
-        input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        outputStream = new PrintStream(clientSocket.getOutputStream());
-        while ((line = input.readLine()) != null) {
-            System.out.println("Server Got => " + line);
-            System.out.println("Server echoing line back => " + line);
-            outputStream.println(line);
-            outputStream.flush();
-        }
-    }
-
-    public void close() throws IOException {
-        System.out.println("Server Closing Connection by Sending => Ok");
-        input.close();
-        outputStream.close();
-        server.close();
-    }
 }
+
