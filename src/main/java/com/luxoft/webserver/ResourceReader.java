@@ -6,32 +6,39 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-public class ResourceReader {
+public class ResourceReader implements AutoCloseable {
+    InputStream inputStream = null;
 
     public String reader(String path) {
-        InputStream inputStream = null;
+        StringBuilder result = new StringBuilder();
+        int letter;
         try {
             inputStream = new FileInputStream(path);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+//           e.printStackTrace();
+            System.out.println(e);
         }
-        StringBuilder result = new StringBuilder();
-        int letter;
         while (true) {
             try {
-                if ((letter = Objects.requireNonNull(inputStream).read()) == -1) break;
-                result.append((char) letter);
-            } catch (IOException e) {
-                e.printStackTrace();
+                if ((letter = Objects.requireNonNull(inputStream).read()) != -1) {
+                    result.append((char) letter);
+                } else {
+                    break;
+                }
+            } catch (NullPointerException | IOException e) {
+                result.append("<h1>404</h1>");
+                break;
+
             }
 
         }
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
+        System.out.println((result));
         return String.valueOf(result);
+    }
+
+    @Override
+    public void close() throws Exception {
+        inputStream.close();
     }
 }

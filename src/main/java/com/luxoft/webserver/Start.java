@@ -8,7 +8,7 @@ public class Start {
 
         WebServer server;
         server = new WebServer();
-        server.setPort(50500);
+        server.setPort(50000);
         server.setWebAppPath("src/main/resources/webapp/");
         try {
             server.start();
@@ -17,4 +17,3 @@ public class Start {
         }
     }
 }
-
