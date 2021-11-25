@@ -1,4 +1,4 @@
-package com.luxoft.webserver;
+package com.luxoft.server;
 
 import java.io.IOException;
 

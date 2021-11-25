@@ -35,6 +35,7 @@ public class ResourceReader implements AutoCloseable {
 
         System.out.println((result));
         return String.valueOf(result);
+//        return "<!DOCTYPE html><html><head></head><body><h1>404</h1></body></html>";
     }
 
     @Override

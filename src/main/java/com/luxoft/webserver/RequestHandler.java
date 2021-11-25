@@ -10,9 +10,10 @@ public class RequestHandler {
         ServerSocket serverSocket = new ServerSocket(port);
         Socket socket = serverSocket.accept();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        String file = (new RequestParser().parse(bufferedReader.readLine()));
 
+        String file = (new RequestParser().parse(bufferedReader.readLine()));
         String uri = path + file;
+        System.out.println(uri);
         socketWriter(uri, socket, bufferedReader);
         bufferedReader.close();
         serverSocket.close();
@@ -25,7 +26,7 @@ public class RequestHandler {
     private void handle() {
 //        new RequestParser(uri);
 //            new Request();
-//        new ResponseWriter();
+        new ResponseWriter();
 
     }
 
@@ -38,8 +39,13 @@ public class RequestHandler {
             }
         }
         System.out.println("Request obtained");
+//        bufferedWriter.write("HTTP/1.1 404 OK\r\n");
         bufferedWriter.write("HTTP/1.1 200 OK\r\n");
+//        System.out.println(new ResourceReader().reader(uri));
+//
         bufferedWriter.write(new ResourceReader().reader(uri));
+
+//        bufferedWriter.write("<!DOCTYPE html><html><head></head><body><h1>404</h1></body></html>");
 
         bufferedWriter.close();
     }
